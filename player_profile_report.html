@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player Profile — Telekom Baskets Bonn</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#F2F2F2;color:#1A1A1A;font-size:13px;line-height:1.5}
+@media print{body{background:#FFF}.no-print{display:none!important}.page{box-shadow:none!important;margin:0!important;border-radius:0!important}@page{size:A4 portrait;margin:10mm}}
+:root{--mg:#E20074;--mgdk:#B3005A;--mgbg:#FDF0F7;--mglt:#F9C6DF;--tq:#00A0B4;--tqbg:#EBF8FB;--bk:#1A1A1A;--wh:#FFF;--gray:#F4F4F4;--border:#E0E0E0;--muted:#888;--green:#0A7A56;--greenbg:#E6F4F0;--amber:#B85C00;--amberbg:#FFF3E0;--red:#C0001F;--redbg:#FDECEA;}
+
+/* TOOLBAR */
+.toolbar{background:var(--bk);border-bottom:3px solid var(--mg);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.toolbar-logo{display:flex;align-items:center;gap:10px}
+.toolbar-badge{width:32px;height:32px;border-radius:6px;background:var(--mg);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#FFF}
+.toolbar-label{font-size:13px;font-weight:700;color:#FFF}
+.toolbar-sub{font-size:10px;color:#888;margin-top:1px}
+.toolbar-actions{display:flex;gap:8px}
+.btn{padding:7px 16px;font-size:12px;font-weight:700;border-radius:6px;cursor:pointer;border:none;font-family:Arial,sans-serif;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn-mg{background:var(--mg);color:#FFF}
+.btn-outline{background:transparent;color:#CCC;border:1.5px solid #444}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#FFF;border-radius:14px;width:660px;max-width:95vw;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.35)}
+.modal-header{background:var(--bk);border-bottom:3px solid var(--mg);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:14px;font-weight:700;color:#FFF}
+.modal-subtitle{font-size:10px;color:#888;margin-top:2px}
+.modal-close{background:transparent;border:none;color:#888;font-size:22px;cursor:pointer;line-height:1;font-family:Arial,sans-serif;padding:0 2px}
+.modal-close:hover{color:#FFF}
+.modal-search-bar{padding:13px 18px;border-bottom:1px solid var(--border);flex-shrink:0;background:#FAFAFA}
+.modal-search-input{width:100%;padding:9px 13px;font-size:13px;border:1.5px solid var(--border);border-radius:8px;font-family:Arial,sans-serif;outline:none;background:#FFF}
+.modal-search-input:focus{border-color:var(--mg)}
+.modal-body{overflow-y:auto;padding:14px 18px}
+.pos-filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.pos-btn{padding:4px 11px;font-size:11px;font-weight:700;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;background:#FFF;color:var(--muted);font-family:Arial,sans-serif;transition:all .15s}
+.pos-btn:hover{border-color:var(--mg);color:var(--mg)}
+.pos-btn.on{background:var(--mg);color:#FFF;border-color:var(--mg)}
+.roster-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.roster-card{background:var(--gray);border:1.5px solid var(--border);border-radius:10px;padding:13px 10px;cursor:pointer;transition:all .15s;text-align:center}
+.roster-card:hover{border-color:var(--mg);background:var(--mgbg);transform:translateY(-1px)}
+.roster-card.active{border-color:var(--mg);border-width:2px;background:var(--mgbg)}
+.roster-avatar{width:52px;height:52px;border-radius:50%;background:#2D2D2D;border:2.5px solid var(--mg);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#FFF;margin:0 auto 8px}
+.roster-no{font-size:10px;font-weight:700;color:var(--mg)}
+.roster-name{font-size:12px;font-weight:700;color:var(--bk);margin-top:2px;line-height:1.3}
+.roster-pos{font-size:11px;color:var(--muted);margin-top:2px}
+.roster-status{display:inline-block;margin-top:6px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+.s-g{background:var(--greenbg);color:var(--green)}
+.s-a{background:var(--amberbg);color:var(--amber)}
+.s-r{background:var(--redbg);color:var(--red)}
+.empty-state{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+
+/* PAGE */
+.page{width:794px;margin:24px auto;background:#FFF;border-radius:4px;box-shadow:0 2px 16px rgba(0,0,0,.12);overflow:hidden}
+
+/* COVER */
+.cover{background:var(--bk);padding:26px 32px;display:flex;align-items:center;gap:24px;border-bottom:4px solid var(--mg)}
+.photo-slot{width:110px;height:110px;border-radius:50%;border:4px solid var(--mg);background:#2A2A2A;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;position:relative;overflow:hidden;transition:border-color .15s}
+.photo-slot:hover{border-color:#FF40A0}
+.photo-slot-label{font-size:9px;color:#555;text-align:center;line-height:1.4;z-index:1;margin-top:4px}
+.cover-info{flex:1}
+.cover-label{font-size:10px;font-weight:700;color:var(--mg);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.cover-name{font-size:26px;font-weight:700;color:#FFF;margin-bottom:10px}
+.cover-meta{display:flex;gap:20px;flex-wrap:wrap}
+.cm-item{display:flex;flex-direction:column}
+.cm-label{font-size:9px;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.cm-value{font-size:13px;color:#FFF;font-weight:700;margin-top:2px}
+.jersey{font-size:58px;font-weight:700;color:var(--mg);line-height:1;flex-shrink:0}
+
+/* SECTION */
+.section{padding:0 32px 24px}
+.section-hd{display:flex;align-items:center;gap:10px;padding:18px 0 12px;border-bottom:2px solid var(--mg);margin-bottom:14px}
+.section-icon{width:28px;height:28px;background:var(--mg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.section-title{font-size:13px;font-weight:700;color:var(--bk);text-transform:uppercase;letter-spacing:.5px}
+.section-badge{margin-left:auto;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--mgbg);color:var(--mgdk)}
+.section-divider{height:6px;background:var(--gray);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
+/* STAT BLOCKS */
+.sg{display:grid;gap:10px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.sb{background:var(--gray);border-radius:10px;padding:11px 13px;border:1px solid var(--border)}
+.sb.hi{background:var(--mgbg);border-color:var(--mglt)}
+.sb.tq{background:var(--tqbg);border-color:#C8EEF4}
+.sl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.sv{font-size:21px;font-weight:700;color:var(--bk);line-height:1}
+.ss{font-size:10px;color:var(--muted);margin-top:3px}
+.stat-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-top:4px}
+
+/* EDITABLE */
+.ef{background:#FFF;border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;font-size:18px;font-weight:700;color:var(--bk);font-family:Arial,sans-serif;width:100%;outline:none;text-align:center;transition:border-color .15s}
+.ef:focus{border-color:var(--mg)}
+.ef-sm{font-size:12px;text-align:left;padding:5px 9px;font-weight:400}
+.fl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+
+/* JUMP CARDS */
+.jc{background:var(--gray);border-radius:10px;padding:13px;border:1px solid var(--border);margin-bottom:10px}
+.jc-title{font-size:11px;font-weight:700;color:var(--mg);text-transform:uppercase;letter-spacing:.5px;margin-bottom:11px;padding-bottom:6px;border-bottom:1.5px solid var(--mg)}
+
+/* ASYMMETRY */
+.asym-wrap{margin-top:10px}
+.asym-bar{height:16px;border-radius:8px;background:#E8E8E8;position:relative;overflow:visible;margin:6px 0 4px}
+.asym-bar-inner{position:absolute;inset:0;border-radius:8px;overflow:hidden}
+.asym-ok-zone{position:absolute;top:0;left:45%;width:10%;height:100%;background:rgba(10,122,86,.15)}
+.asym-center{position:absolute;left:50%;top:0;width:2px;height:100%;background:#BBB;transform:translateX(-50%);z-index:2}
+.asym-needle{position:absolute;top:-4px;width:5px;height:24px;border-radius:3px;transform:translateX(-50%);z-index:3;transition:left .35s,background .35s}
+.asym-axis{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-weight:700;margin-top:3px}
+.asym-reading{display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap}
+.asym-pct{font-size:20px;font-weight:700}
+
+/* INFO/NOTE BOXES */
+.note-box{background:var(--mgbg);border:1px solid var(--mglt);border-radius:8px;padding:9px 13px;font-size:11px;color:var(--mgdk);line-height:1.6;margin-bottom:12px}
+.info-box{background:var(--tqbg);border:1px solid #C8EEF4;border-radius:8px;padding:9px 13px;font-size:11px;color:#005F6B;line-height:1.6;margin-bottom:12px}
+
+/* VBT */
+.vbt-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.vbt-row:last-child{border-bottom:none}
+.vbt-vel{font-size:12px;font-weight:700;color:var(--muted);min-width:60px}
+.vbt-zone{font-size:10px;min-width:100px}
+.vbt-bar-wrap{flex:1;height:20px;background:#E8E8E8;border-radius:4px;overflow:hidden}
+.vbt-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#FFF;min-width:2px;transition:width .5s}
+.vbt-wt{font-size:14px;font-weight:700;min-width:58px;text-align:right;color:var(--bk)}
+.vbt-pct{font-size:10px;color:var(--muted);min-width:44px;text-align:right}
+
+/* FOOTER */
+.doc-footer{background:var(--bk);padding:13px 32px;display:flex;align-items:center;justify-content:space-between;border-top:3px solid var(--mg)}
+.ft{font-size:10px;color:#666}
+</style>
+</head>
+<body>
+
+<!-- ══ ROSTER MODAL ══ -->
+<div class="modal-overlay" id="roster-modal" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Select player</div>
+        <div class="modal-subtitle">Telekom Baskets Bonn · 2025–26 Roster · 12 players</div>
+      </div>
+      <button class="modal-close" onclick="closeRoster()">✕</button>
+    </div>
+    <div class="modal-search-bar">
+      <input class="modal-search-input" type="text" id="roster-search" placeholder="🔍  Search by name, number or position..." oninput="filterRoster()">
+    </div>
+    <div class="modal-body">
+      <div class="pos-filters" id="pos-filters"></div>
+      <div class="roster-grid" id="roster-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOOLBAR ══ -->
+<div class="toolbar no-print">
+  <div class="toolbar-logo">
+    <div class="toolbar-badge">T</div>
+    <div>
+      <div class="toolbar-label">Baskets Bonn · SPIP</div>
+      <div class="toolbar-sub">Player Profile Report — Preseason Testing</div>
+    </div>
+  </div>
+  <div class="toolbar-actions">
+    <button class="btn btn-outline" onclick="openRoster()">👥 Switch player</button>
+    <button class="btn btn-mg" onclick="window.print()">🖨 Print / Save PDF</button>
+  </div>
+</div>
+
+<!-- ══ PAGE ══ -->
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="photo-slot" onclick="openRoster()" title="Click to select player">
+    <div style="font-size:28px">👤</div>
+    <div class="photo-slot-label">Click to<br>select player</div>
+  </div>
+
+  <div class="cover-info">
+    <div class="cover-label">Telekom Baskets Bonn · Preseason Profile</div>
+    <div class="cover-name" id="cover-name">Marcus Johnson</div>
+    <div class="cover-meta">
+      <div class="cm-item"><span class="cm-label">Position</span><span class="cm-value" id="cover-pos">PG</span></div>
+      <div class="cm-item"><span class="cm-label">Date of birth</span><span class="cm-value" id="cover-dob">14 March 1997</span></div>
+      <div class="cm-item"><span class="cm-label">Age</span><span class="cm-value" id="cover-age">29 yrs</span></div>
+      <div class="cm-item"><span class="cm-label">Nationality</span><span class="cm-value" id="cover-nat">USA</span></div>
+      <div class="cm-item">
+        <span class="cm-label">Test date</span>
+        <input class="ef ef-sm" id="test-date" type="date" value="2026-06-22" style="width:140px;background:transparent;border-color:#444;color:#FFF">
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:right;flex-shrink:0">
+    <div style="font-size:9px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Jersey</div>
+    <div class="jersey" id="cover-no">4</div>
+    <div style="font-size:11px;color:#888;margin-top:4px" id="cover-season">2025–26 Preseason</div>
+  </div>
+</div>
+
+<!-- ══ 1. PHYSICAL ══ -->
+<div class="section">
+  <div class="section-hd">
+    <div class="section-icon">📏</div>
+    <div class="section-title">Physical measurements</div>
+    <div class="section-badge">Anthropometry</div>
+  </div>
+  <div class="sg g5">
+    <div class="sb hi"><div class="sl">Height</div><input class="ef" id="height" type="number" value="188" step="0.5" onchange="calcBMI()"><div class="ss">cm</div></div>
+    <div class="sb hi"><div class="sl">Body weight</div><input class="ef" id="bw" type="number" value="93.2" step="0.1" onchange="calcBMI()"><div class="ss">kg</div></div>
+    <div class="sb hi"><div class="sl">Wingspan</div><input class="ef" id="wingspan" type="number" value="196" step="0.5"><div class="ss">cm</div></div>
+    <div class="sb hi"><div class="sl">Body fat</div><input class="ef" id="bodyfat" type="number" value="11.1" step="0.1"><div class="ss">%</div></div>
+    <div class="sb"><div class="sl">BMI</div><div class="sv" id="bmi">26.4</div><div class="ss">Auto-calculated</div></div>
+  </div>
+  <div style="margin-top:10px"><div class="fl">Notes</div><input class="ef ef-sm" id="phys-notes" placeholder="e.g. measured post-training, hydration status..." style="width:100%"></div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══ 2. MOVEMENT SCREEN ══ -->
+<div class="section">
+  <div class="section-hd">
+    <div class="section-icon">🦵</div>
+    <div class="section-title">Movement screen</div>
+    <div class="section-badge">Qualitative Assessment</div>
+  </div>
+
+  <div class="jc">
+    <div class="jc-title">🔵 Ankle dorsiflexion — weight-bearing lunge test (WBLT)</div>
+    <div class="info-box">
+      <strong>Distance (cm):</strong> Wall-to-toe distance. Normal range ≥ 10 cm. Bilateral asymmetry accepted threshold: <strong>~10%</strong>.
+    </div>
+    <div class="sg g2" style="max-width:340px">
+      <div class="sb hi"><div class="sl">Left — distance</div><input class="ef" id="ankle-l" type="number" placeholder="cm" step="0.5" onchange="calcAnkle()"><div class="ss">cm</div></div>
+      <div class="sb hi"><div class="sl">Right — distance</div><input class="ef" id="ankle-r" type="number" placeholder="cm" step="0.5" onchange="calcAnkle()"><div class="ss">cm</div></div>
+    </div>
+    <div class="asym-wrap">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:11px;font-weight:700;color:var(--muted)">Left–right asymmetry</span>
+        <span style="font-size:11px;color:var(--muted)">Accepted threshold: ~10%</span>
+      </div>
+      <div class="asym-bar"><div class="asym-bar-inner"><div class="asym-ok-zone"></div><div class="asym-center"></div></div><div class="asym-needle" id="needle-ankle" style="left:50%;background:#BBB"></div></div>
+      <div class="asym-axis"><span>← Left dominant</span><span>Balanced</span><span>Right dominant →</span></div>
+      <div class="asym-reading">
+        <span class="asym-pct" id="val-ankle" style="color:var(--muted)">—</span>
+        <span style="font-size:11px;color:var(--muted)" id="dom-ankle"></span>
+        <span class="stat-badge" id="badge-ankle"></span>
+        <span style="font-size:10px;color:var(--muted);font-style:italic">| Norm: ≥10 cm bilateral</span>
+      </div>
+    </div>
+    <div style="margin-top:10px"><div class="fl">Clinician notes</div><input class="ef ef-sm" id="ankle-notes" placeholder="e.g. reduced left mobility, previous ankle sprain history..." style="width:100%"></div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══ 3. JUMP TESTS ══ -->
+<div class="section">
+  <div class="section-hd">
+    <div class="section-icon">⬆</div>
+    <div class="section-title">Jump tests</div>
+    <div class="section-badge">Hawkin Dynamics</div>
+  </div>
+
+  <div class="note-box">
+    <strong>Asymmetry guideline:</strong> &lt;10% ✓ Acceptable &nbsp;·&nbsp; 10–15% ⚠ Monitor — targeted single-leg work &nbsp;·&nbsp; &gt;15% 🚨 High risk — physio referral required
+  </div>
+
+  <!-- CMJ Bilateral -->
+  <div class="jc">
+    <div class="jc-title">🔴 CMJ — countermovement jump (bilateral)</div>
+    <div class="sg g4">
+      <div class="sb hi"><div class="sl">Jump height</div><input class="ef" id="cmj-h" type="number" placeholder="0.000" step="0.001"><div class="ss">metres (m)</div></div>
+      <div class="sb hi"><div class="sl">mRSI</div><input class="ef" id="cmj-mrsi" type="number" placeholder="0.00" step="0.01"><div class="ss">mod. reactive strength</div></div>
+      <div class="sb hi"><div class="sl">Peak prop. force</div><input class="ef" id="cmj-ppf" type="number" placeholder="N" step="10"><div class="ss">Newtons (N)</div></div>
+      <div class="sb hi"><div class="sl">Peak braking vel.</div><input class="ef" id="cmj-pbv" type="number" placeholder="m/s" step="0.01"><div class="ss">m/s</div></div>
+    </div>
+    <div style="margin-top:10px"><div class="fl">Notes</div><input class="ef ef-sm" id="cmj-notes" placeholder="e.g. 3 trials, best value, consistent arm swing..." style="width:100%"></div>
+  </div>
+
+  <!-- Single Leg CMJ -->
+  <div class="jc">
+    <div class="jc-title">🔴 Single-leg CMJ — asymmetry assessment</div>
+    <div class="sg g4" style="margin-bottom:12px">
+      <div class="sb hi"><div class="sl">Left — jump height</div><input class="ef" id="slcmj-l" type="number" placeholder="0.000" step="0.001" onchange="calcSLCMJ()"><div class="ss">metres (m)</div></div>
+      <div class="sb hi"><div class="sl">Right — jump height</div><input class="ef" id="slcmj-r" type="number" placeholder="0.000" step="0.001" onchange="calcSLCMJ()"><div class="ss">metres (m)</div></div>
+      <div class="sb tq"><div class="sl">Asymmetry index</div><div class="sv" id="val-slcmj" style="font-size:20px;color:var(--muted)">—</div><div class="ss">Auto-calculated</div></div>
+      <div class="sb tq"><div class="sl">Dominant side</div><div class="sv" id="dom-slcmj" style="font-size:14px;margin-top:4px;color:var(--muted)">—</div><div id="badge-slcmj" style="margin-top:5px"></div></div>
+    </div>
+    <div class="asym-bar"><div class="asym-bar-inner"><div class="asym-ok-zone"></div><div class="asym-center"></div></div><div class="asym-needle" id="needle-slcmj" style="left:50%;background:#BBB"></div></div>
+    <div class="asym-axis"><span>← Left dominant</span><span>Balanced (&lt;10%)</span><span>Right dominant →</span></div>
+    <div style="margin-top:10px"><div class="fl">Notes</div><input class="ef ef-sm" id="slcmj-notes" placeholder="e.g. right dominant, previous left knee history..." style="width:100%"></div>
+  </div>
+
+  <!-- MRJ -->
+  <div class="jc">
+    <div class="jc-title">🔴 Multi-rebound jump (MRJ 5/3)</div>
+    <div class="sg g3">
+      <div class="sb hi"><div class="sl">RSI</div><input class="ef" id="mrj-rsi" type="number" placeholder="0.00" step="0.01"><div class="ss">height ÷ contact time</div></div>
+      <div class="sb hi"><div class="sl">Avg jump height</div><input class="ef" id="mrj-h" type="number" placeholder="0.000" step="0.001"><div class="ss">metres (m)</div></div>
+      <div class="sb hi"><div class="sl">Avg contact time</div><input class="ef" id="mrj-ct" type="number" placeholder="ms" step="1"><div class="ss">milliseconds (ms)</div></div>
+    </div>
+    <div style="margin-top:10px"><div class="fl">Notes</div><input class="ef ef-sm" id="mrj-notes" placeholder="e.g. 5 jumps, 3 best used for average..." style="width:100%"></div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══ 4. STRENGTH ══ -->
+<div class="section">
+  <div class="section-hd">
+    <div class="section-icon">💪</div>
+    <div class="section-title">Strength values</div>
+    <div class="section-badge">Isometric + VBT</div>
+  </div>
+
+  <!-- MTP -->
+  <div class="jc">
+    <div class="jc-title">🟣 Mid thigh pull (MTP) — isometric</div>
+    <div class="sg g4" style="margin-bottom:12px">
+      <div class="sb hi"><div class="sl">Rel. peak force (L)</div><input class="ef" id="mtp-rel-l" type="number" placeholder="N/kg" step="0.1"><div class="ss">N/kg (BW)</div></div>
+      <div class="sb hi"><div class="sl">Peak force (L)</div><input class="ef" id="mtp-abs-l" type="number" placeholder="N" step="10" onchange="calcMTP()"><div class="ss">Newtons (N)</div></div>
+      <div class="sb hi"><div class="sl">Rel. peak force (R)</div><input class="ef" id="mtp-rel-r" type="number" placeholder="N/kg" step="0.1"><div class="ss">N/kg (BW)</div></div>
+      <div class="sb hi"><div class="sl">Peak force (R)</div><input class="ef" id="mtp-abs-r" type="number" placeholder="N" step="10" onchange="calcMTP()"><div class="ss">Newtons (N)</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;font-weight:700;color:var(--muted)">Left–right asymmetry (peak force)</span><span style="font-size:11px;color:var(--muted)">Threshold: ~10%</span></div>
+    <div class="asym-bar"><div class="asym-bar-inner"><div class="asym-ok-zone"></div><div class="asym-center"></div></div><div class="asym-needle" id="needle-mtp" style="left:50%;background:#BBB"></div></div>
+    <div class="asym-axis"><span>← Left dominant</span><span>Balanced</span><span>Right dominant →</span></div>
+    <div class="asym-reading"><span class="asym-pct" id="val-mtp" style="color:var(--muted)">—</span><span style="font-size:11px;color:var(--muted)" id="dom-mtp"></span><span class="stat-badge" id="badge-mtp"></span></div>
+    <div style="margin-top:10px"><div class="fl">Notes</div><input class="ef ef-sm" id="mtp-notes" placeholder="e.g. 2 × 3s hold, best value, knee angle 120°..." style="width:100%"></div>
+  </div>
+
+  <!-- CALF -->
+  <div class="jc">
+    <div class="jc-title">🟣 Seated calf raises — isometric</div>
+    <div class="sg g4" style="margin-bottom:12px">
+      <div class="sb hi"><div class="sl">Rel. peak force (L)</div><input class="ef" id="calf-rel-l" type="number" placeholder="N/kg" step="0.1"><div class="ss">N/kg (BW)</div></div>
+      <div class="sb hi"><div class="sl">Peak force (L)</div><input class="ef" id="calf-abs-l" type="number" placeholder="N" step="10" onchange="calcCalf()"><div class="ss">Newtons (N)</div></div>
+      <div class="sb hi"><div class="sl">Rel. peak force (R)</div><input class="ef" id="calf-rel-r" type="number" placeholder="N/kg" step="0.1"><div class="ss">N/kg (BW)</div></div>
+      <div class="sb hi"><div class="sl">Peak force (R)</div><input class="ef" id="calf-abs-r" type="number" placeholder="N" step="10" onchange="calcCalf()"><div class="ss">Newtons (N)</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;font-weight:700;color:var(--muted)">Left–right asymmetry (peak force)</span><span style="font-size:11px;color:var(--muted)">Threshold: ~10%</span></div>
+    <div class="asym-bar"><div class="asym-bar-inner"><div class="asym-ok-zone"></div><div class="asym-center"></div></div><div class="asym-needle" id="needle-calf" style="left:50%;background:#BBB"></div></div>
+    <div class="asym-axis"><span>← Left dominant</span><span>Balanced</span><span>Right dominant →</span></div>
+    <div class="asym-reading"><span class="asym-pct" id="val-calf" style="color:var(--muted)">—</span><span style="font-size:11px;color:var(--muted)" id="dom-calf"></span><span class="stat-badge" id="badge-calf"></span></div>
+    <div style="margin-top:10px"><div class="fl">Notes</div><input class="ef ef-sm" id="calf-notes" placeholder="e.g. 90° knee flexion, padded bar, 3 trials each leg..." style="width:100%"></div>
+  </div>
+
+  <!-- VBT -->
+  <div class="jc">
+    <div class="jc-title">🟣 Trap bar deadlift — VBT load-velocity profile</div>
+    <div class="info-box" style="margin-bottom:12px"><strong>VBT zones:</strong> 1.0 m/s = speed-strength (~50–55% 1RM) &nbsp;·&nbsp; 0.65 m/s = strength-speed (~65–75% 1RM) &nbsp;·&nbsp; 0.3 m/s = maximal strength (~85–95% 1RM)</div>
+    <div id="vbt-chart" style="margin-bottom:14px"></div>
+    <div class="sg g3">
+      <div class="sb tq"><div class="sl">Weight @ 1.0 m/s</div><input class="ef" id="vbt-100" type="number" placeholder="kg" step="2.5" onchange="buildVBT()"><div class="ss">kg · Speed-strength</div></div>
+      <div class="sb tq"><div class="sl">Weight @ 0.65 m/s</div><input class="ef" id="vbt-065" type="number" placeholder="kg" step="2.5" onchange="buildVBT()"><div class="ss">kg · Strength-speed</div></div>
+      <div class="sb tq"><div class="sl">Weight @ 0.3 m/s</div><input class="ef" id="vbt-030" type="number" placeholder="kg" step="2.5" onchange="buildVBT()"><div class="ss">kg · Max strength</div></div>
+    </div>
+    <div style="margin-top:10px"><div class="fl">Notes</div><input class="ef ef-sm" id="vbt-notes" placeholder="e.g. linear encoder, 3 reps per load, best rep velocity recorded..." style="width:100%"></div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══ LEGEND + SIGN-OFF ══ -->
+<div class="section">
+  <div class="section-hd">
+    <div class="section-icon">📊</div>
+    <div class="section-title">Asymmetry reference</div>
+  </div>
+  <div class="sg g3">
+    <div class="sb" style="background:var(--greenbg);border-color:#9FE1CB"><div style="font-size:18px;margin-bottom:5px">✅</div><div style="font-size:13px;font-weight:700;color:var(--green)">&lt;10% · Acceptable</div><div style="font-size:11px;color:var(--green);margin-top:4px;line-height:1.5">Within normal bilateral variation. Monitor across the season.</div></div>
+    <div class="sb" style="background:var(--amberbg);border-color:#FAC775"><div style="font-size:18px;margin-bottom:5px">⚠️</div><div style="font-size:13px;font-weight:700;color:var(--amber)">10–15% · Monitor</div><div style="font-size:11px;color:var(--amber);margin-top:4px;line-height:1.5">Meaningful asymmetry. Targeted single-leg work. Retest after 4–6 weeks.</div></div>
+    <div class="sb" style="background:var(--redbg);border-color:#F7C1C1"><div style="font-size:18px;margin-bottom:5px">🚨</div><div style="font-size:13px;font-weight:700;color:var(--red)">&gt;15% · High risk</div><div style="font-size:11px;color:var(--red);margin-top:4px;line-height:1.5">Immediate physio referral. Modify load. Weekly monitoring.</div></div>
+  </div>
+  <div style="margin-top:14px"><div class="fl">General S&C assessment notes</div><textarea class="ef ef-sm" id="general-notes" rows="3" style="width:100%;resize:vertical"></textarea></div>
+  <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div><div class="fl">S&C Coach</div><input class="ef ef-sm" id="coach-name" placeholder="Name and signature" style="width:100%"></div>
+    <div><div class="fl">Physiotherapist</div><input class="ef ef-sm" id="physio-name" placeholder="Name and signature" style="width:100%"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div>
+    <div class="ft" style="color:#999;font-weight:700">Telekom Baskets Bonn · SPIP Performance Platform</div>
+    <div class="ft" style="margin-top:2px">Player Profile Report · Preseason Testing · Confidential</div>
+  </div>
+  <div id="footer-date" class="ft" style="font-style:italic"></div>
+</div>
+</div><!-- /page -->
+
+<script>
+// ══════════════════════════════════════════
+// ROSTER DATA
+// ══════════════════════════════════════════
+const ROSTER = [
+  {id:'mj',no:4, name:'Marcus Johnson',    fn:'Marcus',    ln:'Johnson',    pos:'PG',nat:'USA',           dob:'1997-03-14',age:29,ht:188,wt:93.2,ws:196,fat:11.1,stLbl:'High risk',stCls:'s-r'},
+  {id:'tr',no:11,name:'Tomas Rodriguez',   fn:'Tomas',     ln:'Rodriguez',  pos:'SF',nat:'Spain',         dob:'1999-07-22',age:26,ht:201,wt:98.0,ws:210,fat:12.9,stLbl:'High risk',stCls:'s-r'},
+  {id:'ak',no:7, name:'Aleksander Kowalski',fn:'Aleksander',ln:'Kowalski',  pos:'C', nat:'Poland',        dob:'1996-11-05',age:29,ht:213,wt:112.4,ws:224,fat:14.4,stLbl:'Monitor',  stCls:'s-a'},
+  {id:'dn',no:22,name:'Dmitri Novak',       fn:'Dmitri',    ln:'Novak',     pos:'PF',nat:'Czech Republic',dob:'2000-02-18',age:25,ht:208,wt:116.1,ws:218,fat:12.3,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'ob',no:3, name:'Owen Brennan',       fn:'Owen',      ln:'Brennan',   pos:'SG',nat:'Ireland',       dob:'2001-09-30',age:24,ht:196,wt:88.5,ws:204,fat:11.4,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'jw',no:14,name:'Jonas Weber',        fn:'Jonas',     ln:'Weber',     pos:'PG',nat:'Germany',       dob:'1998-05-11',age:27,ht:185,wt:82.6,ws:192,fat:10.8,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'ms',no:9, name:'Mikael Svensson',    fn:'Mikael',    ln:'Svensson',  pos:'SF',nat:'Sweden',        dob:'1997-12-03',age:28,ht:203,wt:97.5,ws:213,fat:13.1,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'lm',no:5, name:'Luca Martini',       fn:'Luca',      ln:'Martini',   pos:'SG',nat:'Italy',         dob:'2002-04-16',age:23,ht:194,wt:86.3,ws:200,fat:10.2,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'dc',no:21,name:'Darius Coleman',     fn:'Darius',    ln:'Coleman',   pos:'PF',nat:'USA',           dob:'1995-08-27',age:30,ht:206,wt:108.0,ws:219,fat:14.8,stLbl:'Monitor',  stCls:'s-a'},
+  {id:'fk',no:18,name:'Filip Kovač',         fn:'Filip',     ln:'Kovač',     pos:'C', nat:'Slovenia',      dob:'2003-01-09',age:22,ht:216,wt:115.2,ws:228,fat:15.2,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'rb',no:33,name:'Raphael Bonnet',     fn:'Raphael',   ln:'Bonnet',    pos:'SF',nat:'France',        dob:'1998-10-20',age:27,ht:199,wt:94.8,ws:207,fat:12.6,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'hn',no:2, name:'Henrik Nielsen',     fn:'Henrik',    ln:'Nielsen',   pos:'PG',nat:'Denmark',       dob:'2000-06-14',age:25,ht:187,wt:84.1,ws:195,fat:10.5,stLbl:'Optimal',  stCls:'s-g'},
+];
+
+const POS_ALL = ['All','PG','SG','SF','PF','C'];
+let currentPlayer = ROSTER[0];
+let filterPos = 'All';
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+function openRoster(){
+  document.getElementById('roster-modal').classList.add('open');
+  document.getElementById('roster-search').value = '';
+  filterPos = 'All';
+  buildPosFilters();
+  buildGrid(ROSTER);
+  setTimeout(()=>document.getElementById('roster-search').focus(),100);
+}
+function closeRoster(){ document.getElementById('roster-modal').classList.remove('open'); }
+function overlayClick(e){ if(e.target===document.getElementById('roster-modal')) closeRoster(); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeRoster(); });
+
+function buildPosFilters(){
+  document.getElementById('pos-filters').innerHTML = POS_ALL.map(p=>
+    `<button class="pos-btn${p===filterPos?' on':''}" onclick="setPos('${p}')">${p}</button>`
+  ).join('');
+}
+function setPos(p){ filterPos=p; buildPosFilters(); filterRoster(); }
+
+function filterRoster(){
+  const q = document.getElementById('roster-search').value.toLowerCase();
+  const vis = ROSTER.filter(p=>{
+    const mPos = filterPos==='All' || p.pos===filterPos;
+    const mQ = p.name.toLowerCase().includes(q) || String(p.no).includes(q) || p.pos.toLowerCase().includes(q) || p.nat.toLowerCase().includes(q);
+    return mPos && mQ;
+  });
+  buildGrid(vis);
+}
+
+function buildGrid(players){
+  if(!players.length){
+    document.getElementById('roster-grid').innerHTML = '<div class="empty-state" style="grid-column:1/-1">No players found</div>';
+    return;
+  }
+  document.getElementById('roster-grid').innerHTML = players.map(p=>`
+    <div class="roster-card${p.id===currentPlayer.id?' active':''}" onclick="selectPlayer('${p.id}')">
+      <div class="roster-avatar">${p.fn[0]}${p.ln[0]}</div>
+      <div class="roster-no">#${p.no}</div>
+      <div class="roster-name">${p.name}</div>
+      <div class="roster-pos">${p.pos} · ${p.nat}</div>
+      <span class="roster-status stat-badge ${p.stCls}">${p.stLbl}</span>
+    </div>`).join('');
+}
+
+function selectPlayer(id){
+  currentPlayer = ROSTER.find(p=>p.id===id);
+  loadPlayer(currentPlayer);
+  closeRoster();
+}
+
+// ══════════════════════════════════════════
+// LOAD PLAYER INTO REPORT
+// ══════════════════════════════════════════
+function loadPlayer(p){
+  // Cover
+  document.getElementById('cover-name').textContent = p.name;
+  document.getElementById('cover-pos').textContent  = p.pos;
+  document.getElementById('cover-age').textContent  = p.age + ' yrs';
+  document.getElementById('cover-nat').textContent  = p.nat;
+  document.getElementById('cover-no').textContent   = p.no;
+  const dob = new Date(p.dob);
+  document.getElementById('cover-dob').textContent  =
+    dob.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+  // Physical
+  document.getElementById('height').value  = p.ht;
+  document.getElementById('bw').value      = p.wt;
+  document.getElementById('wingspan').value = p.ws;
+  document.getElementById('bodyfat').value  = p.fat;
+  calcBMI();
+
+  // Clear all test fields (fresh per player)
+  ['ankle-l','ankle-r','ankle-notes',
+   'cmj-h','cmj-mrsi','cmj-ppf','cmj-pbv','cmj-notes',
+   'slcmj-l','slcmj-r','slcmj-notes',
+   'mrj-rsi','mrj-h','mrj-ct','mrj-notes',
+   'mtp-rel-l','mtp-abs-l','mtp-rel-r','mtp-abs-r','mtp-notes',
+   'calf-rel-l','calf-abs-l','calf-rel-r','calf-abs-r','calf-notes',
+   'vbt-100','vbt-065','vbt-030','vbt-notes',
+   'phys-notes','general-notes','coach-name','physio-name',
+  ].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+
+  // Reset asymmetry displays
+  ['ankle','slcmj','mtp','calf'].forEach(resetAsym);
+  document.getElementById('val-slcmj').textContent='—';
+  document.getElementById('dom-slcmj').textContent='—';
+  document.getElementById('badge-slcmj').innerHTML='';
+
+  buildVBT();
+  updateFooter();
+}
+
+// ══════════════════════════════════════════
+// CALCULATIONS
+// ══════════════════════════════════════════
+function calcBMI(){
+  const h=parseFloat(document.getElementById('height').value)||0;
+  const w=parseFloat(document.getElementById('bw').value)||0;
+  document.getElementById('bmi').textContent = (h&&w) ? (w/((h/100)**2)).toFixed(1) : '—';
+}
+
+function aPct(l,r){ const mx=Math.max(l,r); return mx?((mx-Math.min(l,r))/mx*100):0; }
+function aDom(l,r){ return l>r?'Left dominant':r>l?'Right dominant':'Balanced'; }
+function aColor(p){ return p<10?'var(--green)':p<=15?'var(--amber)':'var(--red)'; }
+function aBadge(p){
+  if(p<10) return {cls:'s-g',txt:'✓ Acceptable'};
+  if(p<=15) return {cls:'s-a',txt:'⚠ Monitor'};
+  return {cls:'s-r',txt:'🚨 High risk'};
+}
+function needleLeft(l,r){
+  const p=aPct(l,r), right=r>=l;
+  return Math.min(Math.max(right?(50+p/2):(50-p/2),2),98);
+}
+
+function drawAsym(key, l, r){
+  const needle=document.getElementById('needle-'+key);
+  const pct=aPct(l,r);
+  if(needle){ needle.style.left=needleLeft(l,r)+'%'; needle.style.background=aColor(pct); }
+}
+
+function resetAsym(key){
+  const needle=document.getElementById('needle-'+key);
+  if(needle){ needle.style.left='50%'; needle.style.background='#BBB'; }
+  const vEl=document.getElementById('val-'+key);
+  if(vEl){ vEl.textContent='—'; vEl.style.color='var(--muted)'; }
+  const dEl=document.getElementById('dom-'+key);
+  if(dEl) dEl.textContent='';
+  const bEl=document.getElementById('badge-'+key);
+  if(bEl){ bEl.textContent=''; bEl.className='stat-badge'; }
+}
+
+function setAsymUI(key, l, r){
+  if(!l && !r){ resetAsym(key); return; }
+  const pct=aPct(l,r), bd=aBadge(pct);
+  const vEl=document.getElementById('val-'+key);
+  if(vEl){ vEl.textContent=pct.toFixed(1)+'%'; vEl.style.color=aColor(pct); }
+  const dEl=document.getElementById('dom-'+key);
+  if(dEl) dEl.textContent=aDom(l,r);
+  const bEl=document.getElementById('badge-'+key);
+  if(bEl){ bEl.textContent=bd.txt; bEl.className='stat-badge '+bd.cls; }
+  drawAsym(key,l,r);
+}
+
+function calcAnkle(){
+  const l=parseFloat(document.getElementById('ankle-l').value)||0;
+  const r=parseFloat(document.getElementById('ankle-r').value)||0;
+  setAsymUI('ankle',l,r);
+}
+
+function calcSLCMJ(){
+  const l=parseFloat(document.getElementById('slcmj-l').value)||0;
+  const r=parseFloat(document.getElementById('slcmj-r').value)||0;
+  if(!l&&!r){ document.getElementById('val-slcmj').textContent='—'; document.getElementById('dom-slcmj').textContent='—'; document.getElementById('badge-slcmj').innerHTML=''; resetAsym('slcmj'); return; }
+  const pct=aPct(l,r), bd=aBadge(pct), dom=aDom(l,r);
+  document.getElementById('val-slcmj').textContent=pct.toFixed(1)+'%';
+  document.getElementById('val-slcmj').style.color=aColor(pct);
+  document.getElementById('dom-slcmj').textContent=dom==='Balanced'?'Balanced':dom.split(' ')[0];
+  document.getElementById('badge-slcmj').innerHTML=`<span class="stat-badge ${bd.cls}">${bd.txt}</span>`;
+  drawAsym('slcmj',l,r);
+}
+
+function calcMTP(){
+  const l=parseFloat(document.getElementById('mtp-abs-l').value)||0;
+  const r=parseFloat(document.getElementById('mtp-abs-r').value)||0;
+  setAsymUI('mtp',l,r);
+}
+
+function calcCalf(){
+  const l=parseFloat(document.getElementById('calf-abs-l').value)||0;
+  const r=parseFloat(document.getElementById('calf-abs-r').value)||0;
+  setAsymUI('calf',l,r);
+}
+
+function buildVBT(){
+  const v1=parseFloat(document.getElementById('vbt-100').value)||0;
+  const v2=parseFloat(document.getElementById('vbt-065').value)||0;
+  const v3=parseFloat(document.getElementById('vbt-030').value)||0;
+  const mx=Math.max(v1,v2,v3)||1;
+  document.getElementById('vbt-chart').innerHTML=[
+    {vel:'1.0 m/s', zone:'Speed-strength',   w:v1, pct:'~50–55%', color:'#00A0B4'},
+    {vel:'0.65 m/s',zone:'Strength-speed',   w:v2, pct:'~65–75%', color:'#E20074'},
+    {vel:'0.3 m/s', zone:'Maximal strength', w:v3, pct:'~85–95%', color:'#1A1A1A'},
+  ].map(z=>`<div class="vbt-row">
+    <div class="vbt-vel">${z.vel}</div>
+    <div class="vbt-zone" style="color:${z.color};font-weight:700">${z.zone}</div>
+    <div class="vbt-bar-wrap"><div class="vbt-bar-fill" style="width:${z.w?((z.w/mx)*100).toFixed(0):0}%;background:${z.color}">${z.w||''}</div></div>
+    <div class="vbt-wt">${z.w?z.w+' kg':'—'}</div>
+    <div class="vbt-pct">${z.pct}</div>
+  </div>`).join('');
+}
+
+function updateFooter(){
+  document.getElementById('footer-date').textContent =
+    'Generated: '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+calcBMI();
+buildVBT();
+updateFooter();
+</script>
+</body>
+</html>
