@@ -1074,7 +1074,7 @@ function showTab(id){
   if(id==='sc')renderSC();
   if(id==='perf')renderPerf();
   if(id==='coach')renderCoach();
-  if(id==='roster'){initRosterFilters();renderGrid(PLAYERS);}
+  if(id==='roster'){initRosterFilters();renderGrid(ROSTER);}
 }
 
 // ════════════════════════════════════════════════════════
@@ -1104,24 +1104,27 @@ function filterRoster(){
 }
 
 function renderGrid(players){
-  if(!players.length){
+  if(!players||!players.length){
     document.getElementById('roster-grid').innerHTML='<div style="color:#555;font-size:13px;padding:32px;text-align:center;grid-column:1/-1">No players found</div>';
     return;
   }
   document.getElementById('roster-grid').innerHTML=players.map(p=>{
     const dob=new Date(p.dob);
     const dobStr=dob.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+    const initials=(p.fn&&p.ln)?p.fn[0]+p.ln[0]:(p.name||'??').split(' ').map(x=>x[0]).join('').slice(0,2);
+    const fullName=p.name||(p.fn+' '+p.ln);
+    const pos=p.pos||p.po||'';
     return `<div class="rc" onclick="openRosterProfile('${p.id}')">
       <div class="rc-top">
         <span class="rc-no">#${p.no}</span>
-        <span class="rc-pos">${p.pos}</span>
-        <div class="rc-photo">${p.fn[0]}${p.ln[0]}</div>
-        <div class="rc-name">${p.name}</div>
-        <div class="rc-nat">${p.nat} · ${p.age} yrs</div>
+        <span class="rc-pos">${pos}</span>
+        <div class="rc-photo">${initials}</div>
+        <div class="rc-name">${fullName}</div>
+        <div class="rc-nat">${p.nat||''} · ${p.age||''} yrs</div>
       </div>
       <div class="rc-body">
-        <div class="rc-row"><span class="rc-lbl">Height</span><span class="rc-val">${p.ht} cm</span></div>
-        <div class="rc-row"><span class="rc-lbl">Weight</span><span class="rc-val">${p.wt} kg</span></div>
+        <div class="rc-row"><span class="rc-lbl">Height</span><span class="rc-val">${p.ht||'—'} cm</span></div>
+        <div class="rc-row"><span class="rc-lbl">Weight</span><span class="rc-val">${p.wt||'—'} kg</span></div>
         <div class="rc-bday">🎂 ${dobStr}</div>
       </div>
     </div>`;
