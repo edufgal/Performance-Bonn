@@ -453,6 +453,77 @@ canvas { border-radius:8px; }
 /* Profile page background wrapper */
 #profile-inline > div[style*="background:#F2F2F2"] { background:#0D0D0D !important; }
 
+
+/* ══ REDESIGNED ROSTER ══ */
+.roster-grid-new{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+
+/* Player card — mini version */
+.rc{background:#161616;border:1px solid #252525;border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;position:relative}
+.rc:hover{border-color:#E20074;transform:translateY(-2px);box-shadow:0 8px 24px rgba(226,0,116,.2)}
+.rc-top{background:#0D0D0D;padding:20px 14px 14px;text-align:center;position:relative;border-bottom:1px solid #252525}
+.rc-no{position:absolute;top:10px;left:12px;font-size:11px;font-weight:700;color:#E20074;letter-spacing:.5px}
+.rc-pos{position:absolute;top:10px;right:12px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;background:#E20074;color:#FFF}
+.rc-photo{width:80px;height:80px;border-radius:50%;border:3px solid #E20074;background:#1E1E1E;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#E20074;margin:0 auto 10px;overflow:hidden;position:relative}
+.rc-photo img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%}
+.rc-name{font-size:13px;font-weight:700;color:#F0F0F0;line-height:1.3;margin-bottom:4px}
+.rc-nat{font-size:11px;color:#777}
+.rc-body{padding:12px 14px}
+.rc-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #222;font-size:12px}
+.rc-row:last-child{border-bottom:none}
+.rc-lbl{color:#666;font-weight:600}
+.rc-val{color:#E0E0E0;font-weight:700}
+.rc-bday{font-size:10px;color:#888;text-align:center;margin-top:8px;padding-top:8px;border-top:1px solid #222}
+
+/* Full profile view */
+.rp-back{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rp-back-btn{padding:7px 16px;font-size:12px;font-weight:700;border-radius:8px;cursor:pointer;border:1.5px solid #333;background:#161616;color:#CCC;font-family:Arial,sans-serif;transition:all .15s;display:flex;align-items:center;gap:6px}
+.rp-back-btn:hover{border-color:#E20074;color:#E20074}
+
+/* Profile hero */
+.rp-hero{background:#0D0D0D;border:1px solid #252525;border-radius:14px;overflow:hidden;margin-bottom:14px;border-top:4px solid #E20074}
+.rp-hero-inner{padding:24px 28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.rp-photo{width:110px;height:110px;border-radius:50%;border:4px solid #E20074;background:#1E1E1E;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#E20074;flex-shrink:0;overflow:hidden;position:relative}
+.rp-photo img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:50%}
+.rp-info{flex:1;min-width:200px}
+.rp-name{font-size:26px;font-weight:700;color:#FFF;line-height:1.2;margin-bottom:8px}
+.rp-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.rp-meta-item{display:flex;flex-direction:column}
+.rp-meta-lbl{font-size:9px;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.rp-meta-val{font-size:13px;color:#E0E0E0;font-weight:700;margin-top:2px}
+.rp-no{font-size:60px;font-weight:700;color:#E20074;line-height:1;flex-shrink:0;opacity:.9}
+
+/* Profile section cards */
+.rp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.rp-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.rp-card{background:#161616;border:1px solid #252525;border-radius:12px;padding:18px 20px}
+.rp-card-full{background:#161616;border:1px solid #252525;border-radius:12px;padding:18px 20px;margin-bottom:12px}
+.rp-section-title{font-size:10px;font-weight:700;color:#E20074;text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid #E20074;display:flex;align-items:center;gap:6px}
+.rp-section-title::before{content:'';width:3px;height:13px;background:#E20074;border-radius:2px;display:inline-block}
+
+/* Physical stat blocks */
+.rp-phys-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rp-stat{background:#111;border-radius:10px;padding:12px;text-align:center;border:1px solid #222}
+.rp-stat-lbl{font-size:10px;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.rp-stat-val{font-size:22px;font-weight:700;color:#F0F0F0;line-height:1}
+.rp-stat-unit{font-size:10px;color:#555;margin-top:3px}
+
+/* Allergy pills */
+.al-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:#1E0408;border:1px solid #3A0815;font-size:12px;font-weight:700;color:#FF4060;margin:3px}
+.supp-pill-dk{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:#071418;border:1px solid #0A2228;font-size:12px;font-weight:700;color:#00C8DC;margin:3px}
+.none-pill-dk{padding:5px 12px;border-radius:20px;background:#1A1A1A;font-size:12px;color:#555;font-style:italic;margin:3px;display:inline-block}
+
+/* Injury entry */
+.injury-entry{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #222}
+.injury-entry:last-child{border-bottom:none}
+.injury-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.injury-body{flex:1}
+.injury-name{font-size:13px;font-weight:700;color:#E0E0E0}
+.injury-detail{font-size:11px;color:#666;margin-top:3px}
+.injury-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px}
+
+/* Medical notes box */
+.med-note-box{background:#1E0408;border:1px solid #3A0815;border-radius:8px;padding:12px 14px;font-size:12px;color:#FF8090;line-height:1.7;margin-top:10px}
+
 </style>
 </head>
 <body>
@@ -480,18 +551,24 @@ canvas { border-radius:8px; }
 
 <!-- ════ ROSTER ════ -->
 <div class="content" id="tab-roster">
-  <div class="sec-hd">
-    <div><div class="sec-title">Team roster</div><div class="sec-sub">Telekom Baskets Bonn · 2025–26 · Click a card to view full profile</div></div>
-  </div>
-  <div class="toolbar">
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input class="search-input" type="text" placeholder="Search player..." id="roster-search" oninput="filterRoster()">
+  <!-- CARD GRID VIEW -->
+  <div id="roster-list-view">
+    <div class="sec-hd">
+      <div><div class="sec-title">Team roster</div><div class="sec-sub">Telekom Baskets Bonn · 2025–26 season · 12 players</div></div>
     </div>
-    <div id="pos-filters" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" type="text" placeholder="Search by name, number or position..." id="roster-search" oninput="filterRoster()">
+      </div>
+      <div id="pos-filters" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+    </div>
+    <div id="roster-grid" class="roster-grid-new"></div>
   </div>
-  <div class="roster-grid" id="roster-grid"></div>
-  <div id="roster-detail"></div>
+  <!-- FULL PROFILE VIEW -->
+  <div id="roster-profile-view" style="display:none">
+    <div id="roster-profile-content"></div>
+  </div>
 </div>
 
 <!-- ════ S&C COACH ════ -->
@@ -1016,84 +1093,140 @@ function setPos(pos){selPos=pos;initRosterFilters();filterRoster();}
 
 function filterRoster(){
   const q=document.getElementById('roster-search').value.toLowerCase();
-  const vis=PLAYERS.filter(p=>{
-    const mP=selPos==='All'||p.po===selPos;
-    const mQ=p.fn.toLowerCase().includes(q)||p.po.toLowerCase().includes(q)||String(p.no).includes(q);
+  const source=typeof ROSTER!=='undefined'?ROSTER:PLAYERS;
+  const vis=source.filter(p=>{
+    const posField=p.po||p.pos||'';
+    const mP=selPos==='All'||posField===selPos;
+    const mQ=p.name.toLowerCase().includes(q)||posField.toLowerCase().includes(q)||String(p.no).includes(q)||(p.nat||'').toLowerCase().includes(q);
     return mP&&mQ;
   });
   renderGrid(vis);
 }
 
 function renderGrid(players){
+  if(!players.length){
+    document.getElementById('roster-grid').innerHTML='<div style="color:#555;font-size:13px;padding:32px;text-align:center;grid-column:1/-1">No players found</div>';
+    return;
+  }
   document.getElementById('roster-grid').innerHTML=players.map(p=>{
-    const ab=p.allergies.length>0?`<span class="tag tag-red">⚠ ${p.allergies.length} allerg${p.allergies.length>1?'ies':'y'}</span>`:`<span class="tag tag-gray">No allergies</span>`;
-    return `<div class="player-card${selRoster===p.id?' selected':''}" onclick="selectRosterPlayer('${p.id}')">
-      <div class="card-top">
-        <span class="player-number">#${p.no}</span>
-        <span class="player-pos-badge">${p.po}</span>
-        <div class="player-avatar">${p.fn.split(' ').map(x=>x[0]).join('')}</div>
-        <div class="player-name-card">${p.fn}</div>
-        <div style="font-size:10px;color:#888;margin-top:2px">${p.nat} · ${p.age} yrs</div>
+    const dob=new Date(p.dob);
+    const dobStr=dob.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+    return `<div class="rc" onclick="openRosterProfile('${p.id}')">
+      <div class="rc-top">
+        <span class="rc-no">#${p.no}</span>
+        <span class="rc-pos">${p.pos}</span>
+        <div class="rc-photo">${p.fn[0]}${p.ln[0]}</div>
+        <div class="rc-name">${p.name}</div>
+        <div class="rc-nat">${p.nat} · ${p.age} yrs</div>
       </div>
-      <div class="card-body">
-        <div class="stat-row"><span class="stat-label">Height</span><span class="stat-value">${p.ht} cm</span></div>
-        <div class="stat-row"><span class="stat-label">Weight</span><span class="stat-value">${p.wt} kg</span></div>
-        <div class="stat-row"><span class="stat-label">Wingspan</span><span class="stat-value">${p.ws} cm</span></div>
-        <div class="stat-row"><span class="stat-label">Medical</span><div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end">${ab}<span class="tag tag-teal">${p.supplements.length} suppl.</span></div></div>
+      <div class="rc-body">
+        <div class="rc-row"><span class="rc-lbl">Height</span><span class="rc-val">${p.ht} cm</span></div>
+        <div class="rc-row"><span class="rc-lbl">Weight</span><span class="rc-val">${p.wt} kg</span></div>
+        <div class="rc-bday">🎂 ${dobStr}</div>
       </div>
     </div>`;
   }).join('');
 }
 
-function selectRosterPlayer(id){
-  if(selRoster===id){selRoster=null;document.getElementById('roster-detail').style.display='none';renderGrid(PLAYERS);return;}
-  selRoster=id;renderGrid(PLAYERS);
-  const p=PLAYERS.find(x=>x.id===id);
+function openRosterProfile(id){
+  const p=ROSTER.find(x=>x.id===id);
+  if(!p) return;
   const bmi=(p.wt/((p.ht/100)**2)).toFixed(1);
-  document.getElementById('roster-detail').innerHTML=`
-    <div class="detail-panel">
-      <div class="detail-top">
-        <div class="detail-avatar">${p.fn.split(' ').map(x=>x[0]).join('')}</div>
-        <div style="flex:1">
-          <div class="detail-name">${p.fn}</div>
-          <div style="font-size:12px;color:#AAA;margin-top:3px">${p.po} · ${p.nat} · Age ${p.age}</div>
-          <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">
-            <span class="pill" style="background:#E20074;color:#FFF">${p.po}</span>
+  const dob=new Date(p.dob);
+  const dobStr=dob.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+  const injuryHTML = p.injuries && p.injuries.length>0
+    ? p.injuries.map(inj=>`
+        <div class="injury-entry">
+          <div class="injury-dot" style="background:${inj.color}"></div>
+          <div class="injury-body">
+            <div class="injury-name">${inj.name}</div>
+            <div class="injury-detail">${inj.date}</div>
+            <span class="injury-status" style="background:${inj.color}22;color:${inj.color};border:1px solid ${inj.color}44">${inj.status}</span>
           </div>
+        </div>`).join('')
+    : '<div style="font-size:12px;color:#555;font-style:italic;padding:8px 0">No injury history recorded</div>';
+
+  const allergyHTML = p.allergies && p.allergies.length>0
+    ? p.allergies.map(a=>`<span class="al-pill">⚠ ${a}</span>`).join('')
+    : '<span class="none-pill-dk">No known allergies</span>';
+
+  const suppHTML = p.supplements && p.supplements.length>0
+    ? p.supplements.map(s=>`<span class="supp-pill-dk">💊 ${s}</span>`).join('')
+    : '<span class="none-pill-dk">No supplements recorded</span>';
+
+  document.getElementById('roster-profile-content').innerHTML=`
+    <div class="rp-back">
+      <button class="rp-back-btn" onclick="closeRosterProfile()">← Back to roster</button>
+      <span style="font-size:12px;color:#555">${p.name} · Full profile</span>
+    </div>
+
+    <!-- HERO -->
+    <div class="rp-hero">
+      <div class="rp-hero-inner">
+        <div class="rp-photo">${p.fn[0]}${p.ln[0]}</div>
+        <div class="rp-info">
+          <div class="rp-name">${p.name}</div>
+          <div class="rp-meta">
+            <div class="rp-meta-item"><span class="rp-meta-lbl">Position</span><span class="rp-meta-val">${p.pos}</span></div>
+            <div class="rp-meta-item"><span class="rp-meta-lbl">Nationality</span><span class="rp-meta-val">${p.nat}</span></div>
+            <div class="rp-meta-item"><span class="rp-meta-lbl">Age</span><span class="rp-meta-val">${p.age} years</span></div>
+            <div class="rp-meta-item"><span class="rp-meta-lbl">Date of birth</span><span class="rp-meta-val">${dobStr}</span></div>
+          </div>
+          <span style="display:inline-block;background:#E20074;color:#FFF;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px">${p.pos}</span>
         </div>
-        <div style="font-size:36px;font-weight:700;color:#E20074">#${p.no}</div>
-        <button class="close-btn" onclick="document.getElementById('roster-detail').style.display='none';selRoster=null;renderGrid(PLAYERS)">✕ Close</button>
+        <div class="rp-no">#${p.no}</div>
       </div>
-      <div class="detail-body">
-        <div style="margin-bottom:16px">
-          <div class="detail-section-title">Physical profile</div>
-          <div class="detail-grid">
-            <div class="detail-stat"><div class="detail-stat-label">Height</div><div class="detail-stat-value">${p.ht} cm</div></div>
-            <div class="detail-stat"><div class="detail-stat-label">Body weight</div><div class="detail-stat-value">${p.wt} kg</div></div>
-            <div class="detail-stat"><div class="detail-stat-label">Wingspan</div><div class="detail-stat-value">${p.ws} cm</div></div>
-            <div class="detail-stat"><div class="detail-stat-label">BMI</div><div class="detail-stat-value">${bmi}</div></div>
-            <div class="detail-stat"><div class="detail-stat-label">Date of birth</div><div class="detail-stat-value" style="font-size:12px">${p.dob}</div></div>
-            <div class="detail-stat"><div class="detail-stat-label">Nationality</div><div class="detail-stat-value" style="font-size:12px">${p.nat}</div></div>
-          </div>
-        </div>
-        <div style="margin-bottom:16px">
-          <div class="detail-section-title">⚠️ Allergies & medical notes</div>
-          <div style="display:flex;flex-wrap:wrap;margin-bottom:10px">
-            ${p.allergies.length>0?p.allergies.map(a=>`<span class="allergy-pill">⚠ ${a}</span>`).join(''):'<span class="none-pill">No known allergies</span>'}
-          </div>
-          <div style="background:#FDECEA;border-radius:8px;padding:10px 12px;font-size:12px;color:#C0001F;line-height:1.6">${p.med}</div>
-        </div>
-        <div>
-          <div class="detail-section-title">💊 Supplement protocol</div>
-          <div style="display:flex;flex-wrap:wrap">
-            ${p.supplements.map(s=>`<span class="supp-pill">${s}</span>`).join('')}
-          </div>
-        </div>
+    </div>
+
+    <!-- PHYSICAL PROFILE -->
+    <div class="rp-card-full">
+      <div class="rp-section-title">📏 Physical profile</div>
+      <div class="rp-phys-grid">
+        <div class="rp-stat"><div class="rp-stat-lbl">Height</div><div class="rp-stat-val">${p.ht}</div><div class="rp-stat-unit">cm</div></div>
+        <div class="rp-stat"><div class="rp-stat-lbl">Weight</div><div class="rp-stat-val">${p.wt}</div><div class="rp-stat-unit">kg</div></div>
+        <div class="rp-stat"><div class="rp-stat-lbl">Wingspan</div><div class="rp-stat-val">${p.ws}</div><div class="rp-stat-unit">cm</div></div>
+        <div class="rp-stat"><div class="rp-stat-lbl">Body fat</div><div class="rp-stat-val">${p.fat}</div><div class="rp-stat-unit">%</div></div>
+        <div class="rp-stat"><div class="rp-stat-lbl">BMI</div><div class="rp-stat-val">${bmi}</div><div class="rp-stat-unit">auto-calc</div></div>
+        <div class="rp-stat"><div class="rp-stat-lbl">Height:wingspan</div><div class="rp-stat-val">${(p.ws/p.ht).toFixed(2)}</div><div class="rp-stat-unit">ratio</div></div>
+        <div class="rp-stat" style="grid-column:span 2"><div class="rp-stat-lbl">Birthday</div><div class="rp-stat-val" style="font-size:15px;margin-top:3px">🎂 ${dobStr}</div></div>
       </div>
-    </div>`;
-  document.getElementById('roster-detail').style.display='block';
-  setTimeout(()=>document.getElementById('roster-detail').scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+    </div>
+
+    <div class="rp-grid">
+      <!-- INJURY HISTORY -->
+      <div class="rp-card">
+        <div class="rp-section-title">🩹 Injury history</div>
+        ${injuryHTML}
+      </div>
+
+      <!-- MEDICAL -->
+      <div class="rp-card">
+        <div class="rp-section-title">⚠️ Allergies & medical notes</div>
+        <div style="margin-bottom:10px;display:flex;flex-wrap:wrap">${allergyHTML}</div>
+        <div class="med-note-box">${p.med||'No medical notes recorded.'}</div>
+      </div>
+    </div>
+
+    <!-- SUPPLEMENTATION -->
+    <div class="rp-card-full">
+      <div class="rp-section-title">💊 Supplementation protocol</div>
+      <div style="display:flex;flex-wrap:wrap">${suppHTML}</div>
+    </div>
+  `;
+
+  document.getElementById('roster-list-view').style.display='none';
+  document.getElementById('roster-profile-view').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
+
+function closeRosterProfile(){
+  document.getElementById('roster-profile-view').style.display='none';
+  document.getElementById('roster-list-view').style.display='block';
+}
+
+function selectRosterPlayer(id){ openRosterProfile(id); }
+
 
 // ════════════════════════════════════════════════════════
 // S&C COACH
@@ -1425,18 +1558,54 @@ renderSC();
 // ROSTER DATA
 // ══════════════════════════════════════════
 const ROSTER = [
-  {id:'mj',no:4, name:'Marcus Johnson',    fn:'Marcus',    ln:'Johnson',    pos:'PG',nat:'USA',           dob:'1997-03-14',age:29,ht:188,wt:93.2,ws:196,fat:11.1,stLbl:'High risk',stCls:'s-r'},
-  {id:'tr',no:11,name:'Tomas Rodriguez',   fn:'Tomas',     ln:'Rodriguez',  pos:'SF',nat:'Spain',         dob:'1999-07-22',age:26,ht:201,wt:98.0,ws:210,fat:12.9,stLbl:'High risk',stCls:'s-r'},
-  {id:'ak',no:7, name:'Aleksander Kowalski',fn:'Aleksander',ln:'Kowalski',  pos:'C', nat:'Poland',        dob:'1996-11-05',age:29,ht:213,wt:112.4,ws:224,fat:14.4,stLbl:'Monitor',  stCls:'s-a'},
-  {id:'dn',no:22,name:'Dmitri Novak',       fn:'Dmitri',    ln:'Novak',     pos:'PF',nat:'Czech Republic',dob:'2000-02-18',age:25,ht:208,wt:116.1,ws:218,fat:12.3,stLbl:'Optimal',  stCls:'s-g'},
-  {id:'ob',no:3, name:'Owen Brennan',       fn:'Owen',      ln:'Brennan',   pos:'SG',nat:'Ireland',       dob:'2001-09-30',age:24,ht:196,wt:88.5,ws:204,fat:11.4,stLbl:'Optimal',  stCls:'s-g'},
-  {id:'jw',no:14,name:'Jonas Weber',        fn:'Jonas',     ln:'Weber',     pos:'PG',nat:'Germany',       dob:'1998-05-11',age:27,ht:185,wt:82.6,ws:192,fat:10.8,stLbl:'Optimal',  stCls:'s-g'},
-  {id:'ms',no:9, name:'Mikael Svensson',    fn:'Mikael',    ln:'Svensson',  pos:'SF',nat:'Sweden',        dob:'1997-12-03',age:28,ht:203,wt:97.5,ws:213,fat:13.1,stLbl:'Optimal',  stCls:'s-g'},
-  {id:'lm',no:5, name:'Luca Martini',       fn:'Luca',      ln:'Martini',   pos:'SG',nat:'Italy',         dob:'2002-04-16',age:23,ht:194,wt:86.3,ws:200,fat:10.2,stLbl:'Optimal',  stCls:'s-g'},
-  {id:'dc',no:21,name:'Darius Coleman',     fn:'Darius',    ln:'Coleman',   pos:'PF',nat:'USA',           dob:'1995-08-27',age:30,ht:206,wt:108.0,ws:219,fat:14.8,stLbl:'Monitor',  stCls:'s-a'},
-  {id:'fk',no:18,name:'Filip Kovač',         fn:'Filip',     ln:'Kovač',     pos:'C', nat:'Slovenia',      dob:'2003-01-09',age:22,ht:216,wt:115.2,ws:228,fat:15.2,stLbl:'Optimal',  stCls:'s-g'},
-  {id:'rb',no:33,name:'Raphael Bonnet',     fn:'Raphael',   ln:'Bonnet',    pos:'SF',nat:'France',        dob:'1998-10-20',age:27,ht:199,wt:94.8,ws:207,fat:12.6,stLbl:'Optimal',  stCls:'s-g'},
-  {id:'hn',no:2, name:'Henrik Nielsen',     fn:'Henrik',    ln:'Nielsen',   pos:'PG',nat:'Denmark',       dob:'2000-06-14',age:25,ht:187,wt:84.1,ws:195,fat:10.5,stLbl:'Optimal',  stCls:'s-g'},
+  {id:'mj',no:4, name:'Marcus Johnson',     fn:'Marcus',     ln:'Johnson',    pos:'PG',nat:'USA',           dob:'1997-03-14',age:29,ht:188,wt:93.2,ws:196,fat:11.1,stLbl:'High risk',stCls:'s-r',
+   allergies:['Penicillin','Tree nuts'],med:'Carries EpiPen for nut allergy. Lactose intolerant — adjust post-training nutrition protocol.',
+   supplements:['Creatine monohydrate 5g','Vitamin D3 5000 IU','Omega-3 2g','Magnesium glycinate 400mg'],
+   injuries:[{name:'Right ankle sprain (Grade II)',date:'Nov 2024',status:'Resolved',color:'#2DC98E'},{name:'Left quadriceps strain',date:'Mar 2024',status:'Resolved',color:'#2DC98E'},{name:'Right ankle taping (precautionary)',date:'Ongoing',status:'Monitoring',color:'#F0A040'}]},
+  {id:'tr',no:11,name:'Tomas Rodriguez',    fn:'Tomas',      ln:'Rodriguez',  pos:'SF',nat:'Spain',         dob:'1999-07-22',age:26,ht:201,wt:98.0,ws:210,fat:12.9,stLbl:'High risk',stCls:'s-r',
+   allergies:['Aspirin'],med:'NSAIDs contraindicated. Advise medical staff before administering any anti-inflammatory medication.',
+   supplements:['Beta-alanine 3.2g','Whey protein isolate 30g','Vitamin C 1000mg','Zinc 15mg'],
+   injuries:[{name:'Right knee meniscus (partial)',date:'Jan 2023',status:'Resolved',color:'#2DC98E'},{name:'Bilateral calf compression',date:'Ongoing',status:'Monitoring',color:'#F0A040'}]},
+  {id:'ak',no:7, name:'Aleksander Kowalski',fn:'Aleksander',  ln:'Kowalski',  pos:'C', nat:'Poland',        dob:'1996-11-05',age:29,ht:213,wt:112.4,ws:224,fat:14.4,stLbl:'Monitor',stCls:'s-a',
+   allergies:[],med:'No known allergies. Follows high-protein dietary plan. Monitor body weight weekly.',
+   supplements:['Creatine monohydrate 5g','Vitamin D3 3000 IU','Collagen peptides 10g','Probiotics'],
+   injuries:[{name:'Hip flexor tightness (bilateral)',date:'Ongoing',status:'Prevention protocol',color:'#00C8DC'}]},
+  {id:'dn',no:22,name:'Dmitri Novak',        fn:'Dmitri',     ln:'Novak',     pos:'PF',nat:'Czech Republic',dob:'2000-02-18',age:25,ht:208,wt:116.1,ws:218,fat:12.3,stLbl:'Optimal',stCls:'s-g',
+   allergies:['Latex'],med:'Latex allergy — ensure medical staff use non-latex gloves at all times. No dietary restrictions.',
+   supplements:['Creatine monohydrate 5g','Vitamin D3 4000 IU','Omega-3 3g','HMB 3g','Melatonin 1mg'],
+   injuries:[]},
+  {id:'ob',no:3, name:'Owen Brennan',         fn:'Owen',       ln:'Brennan',   pos:'SG',nat:'Ireland',       dob:'2001-09-30',age:24,ht:196,wt:88.5,ws:204,fat:11.4,stLbl:'Optimal',stCls:'s-g',
+   allergies:[],med:'No known allergies. Vegan diet — ensure plant-based protein options available at all team meals.',
+   supplements:['Beta-alanine 3.2g','Vitamin D3 5000 IU','Omega-3 2g','Caffeine 200mg (pre-training)'],
+   injuries:[]},
+  {id:'jw',no:14,name:'Jonas Weber',           fn:'Jonas',      ln:'Weber',     pos:'PG',nat:'Germany',       dob:'1998-05-11',age:27,ht:185,wt:82.6,ws:192,fat:10.8,stLbl:'Optimal',stCls:'s-g',
+   allergies:['Shellfish','Ibuprofen'],med:'Shellfish allergy — verify all team meals. Ibuprofen contraindicated; use paracetamol as alternative.',
+   supplements:['Whey protein isolate 30g','Vitamin B12 1000mcg','Iron 18mg','Vitamin D3 3000 IU'],
+   injuries:[{name:'Left ankle sprain (Grade I)',date:'Sep 2024',status:'Resolved',color:'#2DC98E'}]},
+  {id:'ms',no:9, name:'Mikael Svensson',       fn:'Mikael',     ln:'Svensson',  pos:'SF',nat:'Sweden',        dob:'1997-12-03',age:28,ht:203,wt:97.5,ws:213,fat:13.1,stLbl:'Optimal',stCls:'s-g',
+   allergies:[],med:'No known allergies. Follows Nordic diet protocol. Prefers cold water immersion for recovery.',
+   supplements:['Creatine monohydrate 5g','Vitamin D3 5000 IU','Ashwagandha 600mg','Magnesium glycinate 400mg'],
+   injuries:[]},
+  {id:'lm',no:5, name:'Luca Martini',           fn:'Luca',       ln:'Martini',   pos:'SG',nat:'Italy',         dob:'2002-04-16',age:23,ht:194,wt:86.3,ws:200,fat:10.2,stLbl:'Optimal',stCls:'s-g',
+   allergies:['Pollen (seasonal Apr–Jun)'],med:'Seasonal hay fever — antihistamine protocol in place April–June. No food allergies.',
+   supplements:['Vitamin D3 3000 IU','Omega-3 2g','Vitamin C 500mg','Quercetin 500mg'],
+   injuries:[]},
+  {id:'dc',no:21,name:'Darius Coleman',         fn:'Darius',     ln:'Coleman',   pos:'PF',nat:'USA',           dob:'1995-08-27',age:30,ht:206,wt:108.0,ws:219,fat:14.8,stLbl:'Monitor',stCls:'s-a',
+   allergies:['Sulfa drugs'],med:'Sulfa drug allergy — inform medical staff before any prescription. Senior player, joint health supplements essential.',
+   supplements:['Creatine monohydrate 5g','Vitamin D3 5000 IU','Turmeric/curcumin 1g','Collagen peptides 10g','Zinc 15mg'],
+   injuries:[{name:'Right knee (ACL reconstruction)',date:'Feb 2022',status:'Fully cleared',color:'#2DC98E'},{name:'Lower back tightness',date:'Ongoing',status:'Management protocol',color:'#F0A040'}]},
+  {id:'fk',no:18,name:'Filip Kovač',             fn:'Filip',      ln:'Kovač',     pos:'C', nat:'Slovenia',      dob:'2003-01-09',age:22,ht:216,wt:115.2,ws:228,fat:15.2,stLbl:'Optimal',stCls:'s-g',
+   allergies:[],med:'No known allergies. Youngest player in squad — monitor load carefully. Growth phase monitoring active.',
+   supplements:['Vitamin D3 5000 IU','Whey protein isolate 30g','Creatine monohydrate 3g'],
+   injuries:[]},
+  {id:'rb',no:33,name:'Raphael Bonnet',          fn:'Raphael',    ln:'Bonnet',    pos:'SF',nat:'France',        dob:'1998-10-20',age:27,ht:199,wt:94.8,ws:207,fat:12.6,stLbl:'Optimal',stCls:'s-g',
+   allergies:['Codeine'],med:'Codeine sensitivity — opioid-based painkillers contraindicated. Adequate alternative pain protocol in place.',
+   supplements:['Omega-3 2g','Vitamin D3 3000 IU','L-glutamine 5g','Melatonin 0.5mg'],
+   injuries:[{name:'Left hamstring strain (Grade I)',date:'Oct 2024',status:'Resolved',color:'#2DC98E'}]},
+  {id:'hn',no:2, name:'Henrik Nielsen',           fn:'Henrik',     ln:'Nielsen',   pos:'PG',nat:'Denmark',       dob:'2000-06-14',age:25,ht:187,wt:84.1,ws:195,fat:10.5,stLbl:'Optimal',stCls:'s-g',
+   allergies:['Dust mites (environmental)'],med:'Environmental dust mite allergy — ensure accommodation and arena are properly ventilated. No food allergies.',
+   supplements:['Vitamin D3 5000 IU','Omega-3 2g','Magnesium glycinate 300mg','Probiotic daily'],
+   injuries:[]},
 ];
 
 const POS_ALL = ['All','PG','SG','SF','PF','C'];
